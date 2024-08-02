@@ -1,5 +1,5 @@
 package app;
-
+// Main.java
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -8,23 +8,18 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
+        List<Product> products = Arrays.asList(
+                new Product("Laptop", "Electronics", 1200.0),
+                new Product("Coffee Maker", "Appliances", 80.0),
+                new Product("Headphones", "Electronics", 150.0),
+                new Product("Blender", "Appliances", 50.0)
+        );
 
-        List<Product> productList = Arrays.asList(
-                new Product("Smartphones", "iPhone 15", 1200.00),
-                new Product("Tablets", "iPad Air 13", 1050.00),
-                new Product("Laptops", "MacBook Air", 1300.00),
-                new Product("Headphones", "AirPods Pro", 260.00));
+        Map<String, Double> result = products.stream()
+                .collect(Collectors.groupingBy(Product::getCategory, Collectors.averagingDouble(Product::getPrice)));
+        Optional<Map.Entry<String,Double>> averageCost = result.entrySet().stream().max(Map.Entry.comparingByValue());
 
-        Map<String, Double> sortByCategory = productList.stream()
-                .collect(Collectors.groupingBy(Product::getCategory,
-                        Collectors.averagingDouble(Product::getPrice)));
-
-        System.out.println("Result of sorting by categories: " + sortByCategory);
-
-        Optional<Map.Entry<String, Double>> averagePrice = sortByCategory
-                .entrySet().stream().max(Map.Entry.comparingByValue());
-
-        System.out.println("Category with highest average price: " + averagePrice);
-
+        System.out.println("Результат сортировки категорий: " + result);
+        System.out.println("Категория с самой высокой средней ценой: " + averageCost);
     }
 }
