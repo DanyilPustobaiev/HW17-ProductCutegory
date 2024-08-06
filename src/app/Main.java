@@ -1,5 +1,6 @@
 package app;
 // Main.java
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -13,28 +14,14 @@ public class Main {
         );
 
         Map<String, Double> result = products.stream()
-                .collect(Collectors.groupingBy(Product::getCategory, Collectors.averagingDouble(Product::getPrice)));
-        Optional<Map.Entry<String,Double>> averageCost = result.entrySet().stream().max(Map.Entry.comparingByValue());
-
-        System.out.println("Результат сортировки категорий: " + result);
-        System.out.println("Категория с самой высокой средней ценой: " + averageCost);
-
-
-
-        Map<Integer, String> hmap = new HashMap<>();
-        hmap.put(11, "Apple");
-        hmap.put(22, "Orange");
-        hmap.put(33, "Kiwi");
-        hmap.put(44, "Banana");
-        hmap.put(55, "Orange");
-
-        Map<Integer, String> resul = hmap.entrySet()
+                .collect(Collectors.groupingBy(Product::getCategory,
+                        Collectors.averagingDouble(Product::getPrice)));
+        Optional<Map.Entry<String, Double>> averageCost = result.entrySet()
                 .stream()
-                .filter(map -> "Orange".equals(map.getValue()))
-                .collect(Collectors.toMap(Map.Entry::getKey,
-                        Map.Entry::getValue));
+                .max(Map.Entry.comparingByValue());
 
-        System.out.println("Result: " + resul);
+        System.out.println("Result of sorting categories: " + result);
+        System.out.println("Category with highest average price: " + averageCost);
     }
 }
 
